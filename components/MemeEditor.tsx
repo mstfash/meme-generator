@@ -6,9 +6,6 @@ import Image from 'next/image';
 import { ChangeEvent, useContext } from 'react';
 import { useRef, useState } from 'react';
 import { SketchPicker, ColorResult } from 'react-color';
-import { ImageFile } from './MemeCreator';
-import saveAs from 'file-saver';
-import html2canvas from 'html2canvas';
 
 const TextBox = ({ index }: { index: number }) => {
   const colorBoxRef = useRef(null);
@@ -91,19 +88,6 @@ const MemeEditor = () => {
     setTextBoxes(newState);
   };
 
-  const downloadImage = async () => {
-    const el = document.getElementById('meme-canvas');
-    if (el) {
-      const canvas = await html2canvas(el, {
-        backgroundColor: 'none',
-        logging: true,
-        useCORS: true,
-      });
-      const image = canvas.toDataURL('image/png', 1.0);
-
-      saveAs(image, 'generated-meme.png');
-    }
-  };
   return (
     <div>
       <div className="flex justify-between items-center">
@@ -138,14 +122,6 @@ const MemeEditor = () => {
             </div>
           );
         })}
-      </div>
-      <div className="mt-5">
-        <button
-          className="rounded border-gray-100 bg-blue-500 text-white p-2 text-sm"
-          onClick={downloadImage}
-        >
-          Save Image
-        </button>
       </div>
     </div>
   );
