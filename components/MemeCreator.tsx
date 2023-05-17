@@ -15,6 +15,7 @@ const MemeCreator = () => {
   const { TextBoxContext, value } = useTextBoxConext();
   const [files, setFiles] = useState<ImageFile[]>([]);
   const [initiateCrop, setInitiateCrop] = useState(false);
+  const [rotation, setRotation] = useState(0);
   const childRef = useRef<any>(null);
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -72,6 +73,8 @@ const MemeCreator = () => {
                   file={files[0]}
                   initiateCrop={initiateCrop}
                   ref={childRef}
+                  rotation={rotation}
+                  setRotation={setRotation}
                 />
               </div>
             ) : (
@@ -119,7 +122,7 @@ const MemeCreator = () => {
           </div>
           {files.length > 0 && (
             <div className="mt-3 flex items-center justify-between lg:min-w-[600px] max-w-[600px]">
-              <div>
+              <div className="flex items-center">
                 {initiateCrop ? null : (
                   <button
                     className="rounded border-gray-100 bg-red-600 text-white p-2 text-sm"
@@ -137,12 +140,29 @@ const MemeCreator = () => {
                   {initiateCrop ? 'Save Edits' : 'Edit Image'}
                 </button>
                 {initiateCrop ? (
-                  <button
-                    className="rounded border-gray-100 bg-gray-200 text-black p-2 text-sm ml-5"
-                    onClick={() => setInitiateCrop(!initiateCrop)}
-                  >
-                    Cancel Edit
-                  </button>
+                  <div className="flex items-center">
+                    <button
+                      className="rounded border-gray-100 bg-gray-200 text-black p-2 text-sm ml-5"
+                      onClick={() => setInitiateCrop(!initiateCrop)}
+                    >
+                      Cancel Edit
+                    </button>
+
+                    <div className="flex items-center ml-3">
+                      <label htmlFor="rotation">Rotation</label>
+                      <input
+                        id="rotation"
+                        className="ml-2 max-w-[80px]"
+                        type="range"
+                        value={rotation}
+                        min={0}
+                        max={360}
+                        step={1}
+                        aria-labelledby="Rotation"
+                        onChange={(e) => setRotation(Number(e.target.value))}
+                      />
+                    </div>
+                  </div>
                 ) : null}
               </div>
 

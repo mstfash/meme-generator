@@ -3,7 +3,6 @@ import Draggable from 'react-draggable';
 import Cropper, { Area } from 'react-easy-crop';
 import { ImageFile } from './MemeCreator';
 import {
-  ChangeEvent,
   forwardRef,
   useCallback,
   useContext,
@@ -15,27 +14,30 @@ import useTextBoxConext from '@/hooks/useTextBoxContext';
 import { getCroppedImg } from '@/app/utils/canvasutils';
 
 const MemePreview = forwardRef(
-  ({ file, initiateCrop }: { file: ImageFile; initiateCrop: boolean }, ref) => {
+  (
+    {
+      file,
+      initiateCrop,
+      rotation,
+      setRotation,
+    }: {
+      file: ImageFile;
+      initiateCrop: boolean;
+      rotation: number;
+      setRotation: (val: number) => void;
+    },
+    ref
+  ) => {
     const memePreviewRef = useRef<HTMLDivElement>(null);
     const [croppedImage, setCroppedImage] = useState<string>();
     const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area>();
 
     const [crop, setCrop] = useState({ x: 0, y: 0 });
     const [zoom, setZoom] = useState(1);
-    const [rotation, setRotation] = useState(0);
+
     const { TextBoxContext } = useTextBoxConext();
-    const { textBoxes, setTextBoxes } = useContext(TextBoxContext);
-    const handleTextChange = (
-      e: ChangeEvent<HTMLTextAreaElement>,
-      index: number
-    ) => {
-      let newState = [...textBoxes];
-      const selected = newState.find((_, i) => i === index);
-      if (selected) {
-        newState[index] = { ...selected, text: e.target.value };
-        setTextBoxes(newState);
-      }
-    };
+    const { textBoxes } = useContext(TextBoxContext);
+
     const onCropComplete = useCallback(
       (croppedArea: Area, croppedAreaPixels: Area) => {
         setCroppedAreaPixels(croppedAreaPixels);
