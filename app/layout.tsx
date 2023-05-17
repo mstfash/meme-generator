@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className="light">
       <link rel="shortcut icon" href="/favicon-32x32.png" />
       <body className={inter.className}>
         <div className="min-h-screen bg-white">
